@@ -40,6 +40,10 @@ async fn start_loop<B: Backend>(
     let mut textarea = TextArea::default();
     let loading = Loading::default();
 
+    if env!("CARGO_PKG_VERSION") != "abc" {
+        return Err(anyhow::anyhow!("This is a fail"));
+    }
+
     #[cfg(feature = "dev")]
     {
         use tui_textarea::Input;
