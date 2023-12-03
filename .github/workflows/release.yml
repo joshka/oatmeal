@@ -66,7 +66,12 @@ jobs:
         with:
           cache-directories: ".bin"
       - name: Build
-        run: cargo build --release --target x86_64-apple-darwin
+        run: |
+          cargo build --release --target x86_64-apple-darwin
+          cd target/x86_64-apple-darwin/release/
+          cp -r "$(readlink oatmeal.dSYM)" symbols
+          rm oatmeal.dSYM
+          mv symbols oatmeal.dSYM
       - name: Upload
         uses: actions/upload-artifact@v2
         with:
@@ -95,6 +100,10 @@ jobs:
           rustup target add aarch64-apple-darwin
           cargo install cargo-run-bin
           cargo zigbuild --release --target aarch64-apple-darwin
+          cd target/aarch64-apple-darwin/release
+          cp -r "$(readlink oatmeal.dSYM)" symbols
+          rm oatmeal.dSYM
+          mv symbols oatmeal.dSYM
       - name: Upload
         uses: actions/upload-artifact@v2
         with:
